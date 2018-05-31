@@ -1,0 +1,63 @@
+$bule:#3190e8;
+$bc: #e4e4e4;
+$fc:#fff;
+
+@mixin bis($url){
+    background-image:url($url);
+    background-repeat:no-repeat;
+    background-size:100% 100%;
+}
+
+@mixin allcover{
+    position:absolute;
+    top:0;
+    right:0;
+}
+
+@mixin ctt{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
+
+@mixin ctp($width,$height){
+    position: absolute;
+    top:50%;
+    left: 50%;
+    margin-left:-$width/2;
+    margin-top:-$height/2;
+}
+
+@mixin tb{
+    position: absolute;
+    top:50%;
+    transform:translateY(-50%);
+}
+
+@mixin lr{
+    position: absolute;
+    left: 50%;
+    transform:translateX(-50%);
+}
+
+@mixin wh($width, $height){
+	width: $width;
+	height: $height;
+}
+
+@mixin ft($size, $line-height) {  
+	font-size: $size;
+	line-height:$line-height;
+}
+
+@mixin sc($size, $color){
+	font-size: $size;
+	color: $color;
+}
+
+@mixin fj($type: space-between){
+	display: flex;
+	justify-content: $type;
+
+}
