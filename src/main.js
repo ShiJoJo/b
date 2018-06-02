@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import VueRouter from 'vue-router';
 import routes from './router'
+import store from './store/index'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(VueRouter)
@@ -24,10 +25,22 @@ const router = new VueRouter({
 		}
 	}
 })
+router.beforeEach( (to, from, next) => {
+	if (store.state.token==0) {
+		if(to.path === '/login'){
+			next();
+		}else{
+			next({ path: '/login' });
+		}
+	}else{
+		next();
+	}
+} )
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

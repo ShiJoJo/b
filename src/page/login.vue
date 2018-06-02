@@ -37,7 +37,7 @@ export default {
         submitForm(formName){
             this.$refs[formName].validate(async(valid)=>{
                 if(valid){
-                    const res = await login(`username=${this.loginForm.username}&userpwd=${this.loginForm.password}`)
+                    const res = await login({username:this.loginForm.username,password:this.loginForm.password})
                     if (res.status) {
                         this.$message({
                             type: 'success',

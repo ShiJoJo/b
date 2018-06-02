@@ -8,10 +8,10 @@
  */
 let baseUrl = ''; 
 let routerMode = 'history';
-let baseImgPath = 'http://images.cangdu.org/';
+let baseImgPath = '';
 
 if (process.env.NODE_ENV == 'development') {
-	baseUrl = 'http://dameicm.dameicm.cn'
+	baseUrl = 'http://localhost:8002'
 }else{
 	baseUrl = 'http://dameicm.dameicm.cn';
 }

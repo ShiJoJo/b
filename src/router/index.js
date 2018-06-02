@@ -15,9 +15,6 @@ export default [
       path: '/login',
       component: login
     },{
-      path:'/admin',
-      component: admin
-    },{
       path:'',
       component:components,
       children:[{
@@ -36,6 +33,10 @@ export default [
         path: '/course',
         component: course,
         meta: ['关于我们', '发展历程'],
-      }]
+      },{
+        path:'/admin',
+        component: admin,
+        meta: ['权限管理', '新增管理员'],
+      },]
     }
 ]
