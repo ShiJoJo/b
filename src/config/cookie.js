@@ -1,9 +1,7 @@
 /* 设置cookie */
-export const setCookie = (cname, cvalue, exdays=1)=>{
+export const setCookie = (cname, cvalue, exdays='session')=>{
     let d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    const expires = "expires="+d.toUTCString();
-    document.cookie = cname + "=" + cvalue + "; " + expires+"; "+"path=/";
+    document.cookie = cname + "=" + cvalue + "; expires" + exdays+"; "+"path=/";
 }
 //获取cookie
 export const getCookie = (cname)=>{

@@ -37,3 +37,10 @@
 	min-width: 0;
 }
 </style>
+<script>
+import {getCookie} from '../config/cookie.js';
+export default {
+	
+}
+</script>
+

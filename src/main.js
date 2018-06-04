@@ -7,9 +7,10 @@ import routes from './router'
 import store from './store/index'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import {setCookie,getCookie} from './config/cookie'
 Vue.use(VueRouter)
 Vue.use(ElementUI);
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 const router = new VueRouter({
 	routes,
 	/* mode:"history",
@@ -26,14 +27,18 @@ const router = new VueRouter({
 	}
 })
 router.beforeEach( (to, from, next) => {
-	if (store.state.token==0) {
+	if (getCookie('Admin_Token')) {
+		if(to.path === '/login'){
+			next({ path: '' });
+		}else{
+			next();			
+		}
+	}else{
 		if(to.path === '/login'){
 			next();
 		}else{
 			next({ path: '/login' });
 		}
-	}else{
-		next();
 	}
 } )
 /* eslint-disable no-new */

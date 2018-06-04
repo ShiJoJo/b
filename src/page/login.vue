@@ -16,6 +16,8 @@
 </template>
 <script>
 import {login} from '../api/getDate'
+import {setCookie,getCookie} from '../config/cookie'
+import { mapActions } from 'vuex'
 export default {
     data(){
         return{
@@ -43,7 +45,9 @@ export default {
                             type: 'success',
                             message: '登录成功'
                         });
-                        this.$router.push('home')
+                        setCookie("Admin_Token",1);
+                        this.setToken();
+                        this.$router.push('/companyFile');
                     }else{
                         this.$message({
                             type: 'error',
@@ -52,7 +56,8 @@ export default {
                     }
                 }
             })
-        }
+        },
+        ...mapActions(['setToken'])
     }
 }
 </script>
@@ -62,7 +67,7 @@ export default {
         background-color: #324057;
         .formCenter{
             @include wh(320px, 286px);
-            @include ctp(320px, 286px);
+            @include ctp(370px, 336px);
             padding: 25px;
             border-radius: 5px;
             text-align: center;
