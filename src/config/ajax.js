@@ -1,38 +1,26 @@
 import { baseUrl } from './env'
-export default async(url, data, type)=>{
+import axios from './http'
+export default (url, data, type)=>{
 	url= baseUrl+url;
-	return  new Promise((resolve, reject) => {
-				let xhr;
-				if (window.XMLHttpRequest) {
-					xhr = new XMLHttpRequest();
-				} else {
-					xhr = new ActiveXObject;
-				}
-				let sendData = '';
-				if (type == 'POST') {
-					Object.keys(data).forEach(key=>{
-						sendData+=key+'='+data[key]+"&";
-					})
-					sendData = sendData.substr(0, sendData.lastIndexOf('&'));
-					// sendData = JSON.stringify(data);
-				}
-				xhr.open(type, url, true);
-				xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-				xhr.send(sendData); 
-				xhr.onreadystatechange = function() {
-					if (xhr.readyState == 4) {
-						if(xhr.status == 200 || xhr.status == 304){
-							let obj = xhr.response;
-							if (typeof obj !== 'object') {
-								obj = JSON.parse(obj);
-							}
-							resolve(obj)
-						}else{
-							reject(xhr)
-						}						
-					}
-				};
-		    })      
+	if(type.toUpperCase()=="GET"){
+		const params = dataStr;
+		return  axios({
+			url: url,
+			method: data,
+			params
+		})
+	}else{
+		let dataStr = '';
+		Object.keys(data).forEach(key => {
+			dataStr += key + '=' + data[key] + '&';
+		})
+		dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'));
+		return  axios({
+			url: url,
+			method: type,
+			data:dataStr
+		})
+	}	      
 }
 /* export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 	type = type.toUpperCase();
