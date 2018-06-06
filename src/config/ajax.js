@@ -1,24 +1,23 @@
-import { baseUrl } from './env'
+// import { baseUrl } from './env'
 import axios from './http'
+import qs from 'qs'
 export default (url, data, type)=>{
-	url= baseUrl+url;
+	// url= baseUrl+url;
 	if(type.toUpperCase()=="GET"){
-		const params = dataStr;
-		return  axios({
-			url: url,
-			method: data,
-			params
-		})
-	}else{
-		let dataStr = '';
-		Object.keys(data).forEach(key => {
-			dataStr += key + '=' + data[key] + '&';
-		})
-		dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'));
+		const params = data;
 		return  axios({
 			url: url,
 			method: type,
-			data:dataStr
+			params
+		})
+	}else{
+		data = qs.stringify(data);
+		console.log(data)
+		return  axios({
+			headers:{"Content-type":'application/x-www-form-urlencoded '},
+			url: url,
+			method: type,
+			data
 		})
 	}	      
 }

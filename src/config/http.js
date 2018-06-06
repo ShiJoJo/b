@@ -2,7 +2,7 @@ import axios from 'axios'
 import store from '../store/index'
 import { Loading, Message } from 'element-ui'
 // 超时时间
-axios.defaults.timeout = 5000
+axios.defaults.timeout = 5000;
 // http请求拦截器
 var loadinginstace;
 const token = store.state.token;
@@ -23,7 +23,7 @@ axios.interceptors.request.use(config => {
 // http响应拦截器
 axios.interceptors.response.use(data => {// 响应成功关闭loading
  loadinginstace.close()
- return data
+ return data.data
 }, error => {
     loadinginstace.close()
     Message.error({

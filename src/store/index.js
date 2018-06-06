@@ -1,17 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import mutations from './mutations'
-import actions from './actions'
 import getters from './getters'
-import {getCookie} from '../config/cookie'
-const tokenId = 'Admin_Token'
+import user from './modules/user'
 Vue.use(Vuex)
-const state = {
-    token:getCookie(tokenId)
-}
 export default new Vuex.Store({
-    state,
+    modules:{
+        user
+    },
     getters,
-    actions,
-    mutations
 })
