@@ -12,9 +12,7 @@ export default (url, data, type)=>{
 		})
 	}else{
 		data = qs.stringify(data);
-		console.log(data)
 		return  axios({
-			headers:{"Content-type":'application/x-www-form-urlencoded '},
 			url: url,
 			method: type,
 			data

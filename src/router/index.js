@@ -14,10 +14,11 @@ export default [
     {
       path: '/login',
       component: login
-    },{
+    },/*{
       path:'',
+      redirect: '/companyFile',
       component:components,
-      children:[{
+      children:[ {
         path: '/companyFile',
         component: companyFile,
         meta: ['关于我们', '公司简介'],
@@ -37,6 +38,5 @@ export default [
         path:'/admin',
         component: admin,
         meta: ['权限管理', '新增管理员'],
-      },]
-    }
+      }, */
 ]

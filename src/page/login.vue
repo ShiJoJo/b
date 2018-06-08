@@ -15,7 +15,7 @@
     </div>
 </template>
 <script>
-import {login} from '../api/getDate'
+import {login} from '../api/login'
 import {setCookie,getCookie} from '../config/cookie'
 import { mapActions } from 'vuex'
 export default {
@@ -40,14 +40,14 @@ export default {
             this.$refs[formName].validate(async(valid)=>{
                 if(valid){
                     const res = await login({username:this.loginForm.username,password:this.loginForm.password})
+                    console.log(res)
                     if (res.status==1) {
                         this.$message({
                             type: 'success',
                             message: '登录成功'
                         });
-                        setCookie("Admin_Token",1);
-                        this.setToken();
-                        this.$router.push('/companyFile');
+                        this.$store.dispatch("setToken",res.token);
+                        this.$router.push('/');
                     }else{
                         this.$message({
                             type: 'error',
@@ -57,7 +57,6 @@ export default {
                 }
             })
         },
-        ...mapActions(['setToken'])
     }
 }
 </script>
