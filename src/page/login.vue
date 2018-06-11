@@ -4,7 +4,7 @@
             <div class="formCenter">
                 <el-header>XXX管理系统</el-header>
                 <el-main>
-                    <el-form :model="loginForm" :rules="rules" ref="loginForm">
+                    <el-form :model="loginForm" :rules="rules" ref="loginForm"  @keyup.enter.native="submitForm('loginForm')">
                         <el-form-item prop="username"><el-input placeholder="用户名" v-model="loginForm.username"></el-input></el-form-item>
                         <el-form-item prop="password"><el-input type="password" placeholder="密码" v-model="loginForm.password"></el-input></el-form-item>
                         <el-form-item><el-button type="primary" @click="submitForm('loginForm')">登录</el-button></el-form-item>
@@ -40,7 +40,6 @@ export default {
             this.$refs[formName].validate(async(valid)=>{
                 if(valid){
                     const res = await login({username:this.loginForm.username,password:this.loginForm.password})
-                    console.log(res)
                     if (res.status==1) {
                         this.$message({
                             type: 'success',

@@ -4,16 +4,20 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 const login = r => require.ensure([], () => r(require('../page/login')), 'login');
-const admin = r => require.ensure([], () => r(require('../page/admin')), 'admin');
+const waring = r => require.ensure([], () => r(require('../page/404Code')), 'waring');
+/* const admin = r => require.ensure([], () => r(require('../page/admin')), 'admin');
 const components = r => require.ensure([], () => r(require('../page/component')), 'component');
 const companyFile = r => require.ensure([], () => r(require('../page/companyFile')), 'companyFile');
 const culture = r => require.ensure([], () => r(require('../page/culture')), 'culture');
 const chart = r => require.ensure([], () => r(require('../page/chart')), 'chart');
-const course = r => require.ensure([], () => r(require('../page/course')), 'course');
+const course = r => require.ensure([], () => r(require('../page/course')), 'course'); */
 export default [
     {
       path: '/login',
       component: login
+    },{
+      path: '/404',
+      component: waring
     },/*{
       path:'',
       redirect: '/companyFile',

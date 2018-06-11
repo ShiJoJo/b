@@ -1,6 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
-import { Loading, Message } from 'element-ui'
+import { Message } from 'element-ui'
 // 超时时间
 axios.defaults.timeout = 5000;
 // http请求拦截器
@@ -42,3 +42,4 @@ const $ajax = (url, data, type)=>{
 }
 export const getAdminRole = data => $ajax('/admin/role', data, 'POST');
 export const login = data => $ajax('/admin/login', data, 'POST');
+export const loginOut = data => $ajax('/admin/loginOut', data, 'POST');

@@ -1,6 +1,5 @@
 <template>
     <div>
-        <headTop></headTop>
         <div class="componyFile">
             <el-form ref="form" :model="form" label-width="80px">
                 <el-form-item label="中文名">
