@@ -31,17 +31,24 @@ router.beforeEach( (to, from, next) => {
 		if(to.path === '/login'){
 			next({ path: '/' });
 		}else{
-			if(store.getters.role.length==0){
-				store.dispatch('getUserInfo').then(response=>{
-					let role = response;
-					store.dispatch("elSildeRole",role).then((roleRoute)=>{
-						router.addRoutes(roleRoute);
-						next({path:to.path});
+			if(store.getters.role){
+				store.dispatch('elSildeMenu').then(()=>{
+					store.getters.getUserInfo.then(response=>{
+						let role = response;
+						store.dispatch("elSildeRole",role).then((roleRoute)=>{
+							router.addRoutes(roleRoute);
+							next({path:to.path});
+						})
+					}).catch((err) => {
+						store.dispatch('layoutOut').then(() => {
+							Message.error(err || 'Verification failed, please login again')
+							next({ path: '/login' });
+						})
 					})
 				}).catch((err) => {
-					store.dispatch('FedLogOut').then(() => {
+					store.dispatch('layoutOut').then(() => {
 						Message.error(err || 'Verification failed, please login again')
-						next({ path: '/' });
+						next({ path: '/login' });
 					})
 				})
 			}else{

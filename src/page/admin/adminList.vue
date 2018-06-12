@@ -22,13 +22,13 @@ export default {
             tableData:[{
                 id:'1',
                 name:"燃萌"
-            }]
+            }],
         }
     },
     methods:{
         edit(row){
             let path = "/adminList/admin?id="+row.id;
-            this.$router({path:path});
+            this.$router.push(path);
         }
     }
 }

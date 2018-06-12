@@ -1,10 +1,11 @@
-import { getAdminRole,loginOut } from '@/api/login'
+import { getAdminMenu,getAdminRole,loginOut } from '@/api/login'
 import { getCookie,setCookie } from "@/config/cookie"
 var tokenName = "Admin_Token";
 const user = {
     state:{
         token:getCookie(tokenName),
-        role:[],
+        role:true,
+        menu:[]
     },
     mutations:{
         SET_TOKEN:(state,token)=>{
@@ -12,19 +13,13 @@ const user = {
         },
         SET_ROLE:(state,role)=>{
             state.role = role;
+        },
+        SET_MENU:(state,menu)=>{
+            state.menu = menu;
         }
     },
     actions:{
-        getUserInfo({commit,state}){
-            return new Promise((resolve,reject)=>{
-                getAdminRole(state.token).then(response=>{
-                    resolve(response);
-                }).catch(error => {
-                    reject(error)
-                })
-            })
-        },
-        setToken({commit,state},token){
+        setToken({commit},token){
             return new Promise(resolve=>{
                 setCookie(tokenName,token);
                 commit('SET_TOKEN',token);
@@ -33,34 +28,30 @@ const user = {
         },
         elSildeRole({commit},role){
             return new Promise(resolve=>{
-                let roleArr = []
+                let roleArr = [],roleChild;
                 Object.keys(role).forEach(keys=>{
-                    if(role[keys]["children"]){
-                        Object.keys(role[keys]["children"]).forEach(items=>{
-                            roleArr.push({
-                                path:role[keys]["children"][items].path,
-                                component:(resolve)=>require(['@/page'+role[keys]["children"][items].filePath+role[keys]["children"][items].component+''],resolve),
-                                meta: role[keys]["children"][items].meta
-                            })
-                        })
-                    }else{
-                        roleArr.push({
-                            path:role[keys].path,
-                            component:(resolve)=>require(['@/page'+role[keys].filePath+role[keys].component+''],resolve),
-                            meta: role[keys].meta
-                        })
+                    roleChild={
+                        path:role[keys].path,
+                        component:(r)=>require(['@/page'+role[keys].filePath+role[keys].component],r),
+                        meta: role[keys].meta
                     }
+                    /* if(role[keys].children){
+                        let childrenDetail=[];
+                        Object.keys(role[keys].children).forEach(cNum=>{
+                            childrenDetail.push
+                        })
+                    } */
                 })
                 const roleRoute=[{
                     path:'',
                     redirect: '/companyFile',
-                    component: (resolve)=>require(['@/components/component'],resolve), 
+                    component: (r)=>require(['@/components/component'],r), 
                     children:roleArr
                 },{
                     path:"*",
-                    component:(resolve)=>require(['@/page/404Code'],resolve),
+                    component:(r)=>require(['@/page/404Code'],r),
                 }]
-                commit('SET_ROLE',role);
+                commit('SET_ROLE',false);
                 resolve(roleRoute);
             })
         },
@@ -68,14 +59,34 @@ const user = {
             return new Promise((resolve,reject)=>{
                 loginOut(state.token).then(response=>{
                     commit("SET_TOKEN","");
-                    commit("SET_ROLE",[]);
                     setCookie(tokenName,"")
                     resolve(response);
                 }).catch(error => {
                     reject(error)
                 })
             })
+        },
+        elSildeMenu({commit,state}){
+            return new Promise((resolve,reject)=>{
+                getAdminMenu(state.token).then(response=>{
+                    commit("SET_MENU",response);
+                    resolve()
+                }).catch(error=>{
+                    reject(error)
+                })
+            })
         }
+    },
+    getters:{        
+        getUserInfo:state=>{
+            return new Promise((resolve,reject)=>{
+                getAdminRole(state.token).then(response=>{
+                    resolve(response);
+                }).catch(error => {
+                    reject(error)
+                })
+            })
+        },
     }
 }
 
