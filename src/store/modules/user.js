@@ -1,5 +1,6 @@
 import { getAdminMenu,getAdminRole,loginOut } from '@/api/login'
 import { getCookie,setCookie } from "@/config/cookie"
+import roleRouter from "@/config/role"
 var tokenName = "Admin_Token";
 const user = {
     state:{
@@ -28,19 +29,11 @@ const user = {
         },
         elSildeRole({commit},role){
             return new Promise(resolve=>{
-                let roleArr = [],roleChild;
+                let roleArr = [];
                 Object.keys(role).forEach(keys=>{
-                    roleChild={
-                        path:role[keys].path,
-                        component:(r)=>require(['@/page'+role[keys].filePath+role[keys].component],r),
-                        meta: role[keys].meta
-                    }
-                    /* if(role[keys].children){
-                        let childrenDetail=[];
-                        Object.keys(role[keys].children).forEach(cNum=>{
-                            childrenDetail.push
-                        })
-                    } */
+                    Object.keys(role[keys].children).forEach(cNum=>{
+                        roleArr.push(roleRouter[role[keys]['children'][cNum]['component']]);
+                    })
                 })
                 const roleRoute=[{
                     path:'',
@@ -51,6 +44,7 @@ const user = {
                     path:"*",
                     component:(r)=>require(['@/page/404Code'],r),
                 }]
+                console.log(roleRoute)
                 commit('SET_ROLE',false);
                 resolve(roleRoute);
             })
@@ -66,28 +60,17 @@ const user = {
                 })
             })
         },
-        elSildeMenu({commit,state}){
+        getUserInfo({commit,state}){
             return new Promise((resolve,reject)=>{
                 getAdminMenu(state.token).then(response=>{
                     commit("SET_MENU",response);
-                    resolve()
+                    resolve(response)
                 }).catch(error=>{
                     reject(error)
                 })
             })
         }
     },
-    getters:{        
-        getUserInfo:state=>{
-            return new Promise((resolve,reject)=>{
-                getAdminRole(state.token).then(response=>{
-                    resolve(response);
-                }).catch(error => {
-                    reject(error)
-                })
-            })
-        },
-    }
 }
 
 export default user

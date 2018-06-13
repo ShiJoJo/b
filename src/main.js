@@ -13,8 +13,7 @@ Vue.use(ElementUI);
 Vue.config.productionTip = false;
 const router = new VueRouter({
 	routes,
-	/* mode:"history",
-	base:'/dist', */
+	mode:"history",
 	scrollBehavior (to, from, savedPosition) {
 	    if (savedPosition) {
 		    return savedPosition
@@ -32,18 +31,12 @@ router.beforeEach( (to, from, next) => {
 			next({ path: '/' });
 		}else{
 			if(store.getters.role){
-				store.dispatch('elSildeMenu').then(()=>{
-					store.getters.getUserInfo.then(response=>{
-						let role = response;
-						store.dispatch("elSildeRole",role).then((roleRoute)=>{
-							router.addRoutes(roleRoute);
-							next({path:to.path});
-						})
-					}).catch((err) => {
-						store.dispatch('layoutOut').then(() => {
-							Message.error(err || 'Verification failed, please login again')
-							next({ path: '/login' });
-						})
+				store.dispatch('getUserInfo').then(response=>{
+					let role = response;
+					store.dispatch("elSildeRole",role).then((roleRoute)=>{
+						console.log(roleRoute)
+						router.addRoutes(roleRoute);
+						next({path:to.path});
 					})
 				}).catch((err) => {
 					store.dispatch('layoutOut').then(() => {

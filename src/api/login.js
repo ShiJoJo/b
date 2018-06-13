@@ -41,6 +41,5 @@ const $ajax = (url, data, type)=>{
 	}	      
 }
 export const getAdminMenu = data => $ajax('/admin/menu',data,'POST');
-export const getAdminRole = data => $ajax('/admin/role', data, 'POST');
 export const login = data => $ajax('/admin/login', data, 'POST');
 export const loginOut = data => $ajax('/admin/loginOut', data, 'POST');

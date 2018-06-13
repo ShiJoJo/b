@@ -5,8 +5,8 @@ Vue.use(Router)
 
 const login = r => require.ensure([], () => r(require('../page/login')), 'login');
 const waring = r => require.ensure([], () => r(require('../page/404Code')), 'waring');
-/* const admin = r => require.ensure([], () => r(require('../page/admin')), 'admin');
-const components = r => require.ensure([], () => r(require('../page/component')), 'component');
+/* const admin = r => require.ensure([], () => r(require('../page/admin/adminList')), 'admin');
+const components = r => require.ensure([], () => r(require('../components/component')), 'component');
 const companyFile = r => require.ensure([], () => r(require('../page/companyFile')), 'companyFile');
 const culture = r => require.ensure([], () => r(require('../page/culture')), 'culture');
 const chart = r => require.ensure([], () => r(require('../page/chart')), 'chart');
@@ -18,7 +18,7 @@ export default [
     },{
       path: '/404',
       component: waring
-    },/*{
+    }/* ,{
       path:'',
       redirect: '/companyFile',
       component:components,
@@ -35,12 +35,9 @@ export default [
         component: chart,
         meta: ['关于我们', '组织架构'],
       },{
-        path: '/course',
-        component: course,
-        meta: ['关于我们', '发展历程'],
-      },{
-        path:'/admin',
+        path: '/adminList',
         component: admin,
-        meta: ['权限管理', '新增管理员'],
-      }, */
+        meta: ['关于我们', '发展历程'],
+      },
+    ]} */
 ]

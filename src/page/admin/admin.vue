@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="adminForm">
         <el-form :model="registForm" :rules="rules" ref="registForm">
             <el-form-item prop="username"><el-input placeholder="用户名" v-model="registForm.username"></el-input></el-form-item>
             <el-form-item prop="password"><el-input type="password" placeholder="密码" v-model="registForm.password"></el-input></el-form-item>
@@ -49,3 +49,14 @@ export default {
     }
 }
 </script>
+<style lang="scss" scoped>
+    @import '../../style/mixin';
+    .adminForm{
+        position:absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        background-color: #fff;
+        @include wh(100%,100%);
+    }
+</style>
