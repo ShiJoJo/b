@@ -28,8 +28,12 @@ export default {
     },
     methods:{
         edit(row){
-            let path = "/listAdmin/addAdmin?id="+row.id;
-            this.$router.push(path);
+            this.$router.push({
+                name:'editAdmin',
+                query:{
+                    id:row.id
+                }
+            });
         }
     }
 }

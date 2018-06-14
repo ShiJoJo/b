@@ -5,7 +5,7 @@ Vue.use(Router)
 
 const login = r => require.ensure([], () => r(require('../page/login')), 'login');
 const waring = r => require.ensure([], () => r(require('../page/404Code')), 'waring');
-/* const admin = r => require.ensure([], () => r(require('../page/admin/adminList')), 'admin');
+/* const adminList = r => require.ensure([], () => r(require('../page/admin/adminList')), 'admin');
 const components = r => require.ensure([], () => r(require('../components/component')), 'component');
 const companyFile = r => require.ensure([], () => r(require('../page/companyFile')), 'companyFile');
 const culture = r => require.ensure([], () => r(require('../page/culture')), 'culture');
@@ -18,7 +18,7 @@ export default [
     },{
       path: '/404',
       component: waring
-    }/* ,{
+    },/* {
       path:'',
       redirect: '/companyFile',
       component:components,
@@ -35,9 +35,20 @@ export default [
         component: chart,
         meta: ['关于我们', '组织架构'],
       },{
-        path: '/adminList',
-        component: admin,
+        path: '/listAdmin',
+        component: adminList,
         meta: ['关于我们', '发展历程'],
+        children:[{
+          path:'editAdmin',
+          name:'editAdmin',
+          component: r => require.ensure([], () => r(require('@/page/admin/admin')), 'admin'),
+          meta: ['权限管理', '管理员列表','修改管理员权限'],
+      },{
+          path:'addAdmin',
+          name:'addAdmin',
+          component: r => require.ensure([], () => r(require('@/page/admin/admin')), 'admin'),
+          meta: ['权限管理', '管理员列表','新增管理员权限'],
+      }]
       },
     ]} */
 ]

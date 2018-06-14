@@ -1,7 +1,7 @@
 <template>
 	<el-container>
 		<el-aside width="200px" style="height:100%; background-color: #545c64;">
-			<el-menu text-color="#fff" active-text-color="#ffd04b" background-color="#545c64" style="min-height:100%;" :default-active="$route.path" router>
+			<el-menu text-color="#fff" active-text-color="#ffd04b" background-color="#545c64" style="min-height:100%;" :default-active="($route.path.match(/\/\S*?(?=\/)|\/\S*/))[0]" router>
 				<template v-for="(item,indexs) in menu">
 					<el-submenu v-if="item.children" :index="item.path" :key="indexs"> 
 						<template slot="title"><i class="el-icon-menu"></i>{{item.name}}</template>
