@@ -1,14 +1,21 @@
 <template>
     <div class="adminForm">
-        <el-form :model="registForm" :rules="rules" ref="registForm">
-            <el-form-item prop="username"><el-input placeholder="用户名" v-model="registForm.username"></el-input></el-form-item>
-            <el-form-item prop="password"><el-input type="password" placeholder="密码" v-model="registForm.password"></el-input></el-form-item>
+        <el-form :model="registForm" :rules="rules" ref="registForm"   @keyup.enter.native="submitForm('registForm')">
+            <el-form-item prop="username"><el-input placeholder="用户名" v-model="registForm.username" class="fromInput"></el-input></el-form-item>
+            <el-form-item prop="password"><el-input type="password" placeholder="密码" v-model="registForm.password" class="fromInput"></el-input></el-form-item>
+            <template v-for="item in role">
+                <el-checkbox :indeterminate="item.all" @change="handleCheckAllChange(item.id,item.checkAll)" v-model="item.checkAll" class="headerCheck">{{item.name}}</el-checkbox>
+                <el-checkbox-group v-model="item.checkedRole" @change="handleCheckedRolesChange(item.checkedRole,item.id)" class="mainCheck">
+                    <el-checkbox v-for="(roleC,index) in item.children" :key="index" :label="roleC.name">{{roleC.name}}</el-checkbox>
+                </el-checkbox-group>
+            </template>
             <el-form-item><el-button type="primary" @click="submitForm('registForm')">保存</el-button></el-form-item>
         </el-form>
     </div>
 </template>
 <script>
 import {register} from '../../api/getDate'
+import roles from '@/config/admin'
 export default {
     data(){
         return{
@@ -21,16 +28,18 @@ export default {
                     {required:true,message:'请输入用户名',tigger:'blur'}
                 ],
                 password:[
-                    {required:true,message:'请输入密码',tigger:'blur'}
+                    {required:true,message:'请输入密码',tigger:'blur'},
+                    {min:6,message:"最少6位字符",tigger:'blur'}
                 ]
-            }
+            },
+            role:roles,
         }
     },
     methods:{
         submitForm(formName){
             this.$refs[formName].validate(async(valid)=>{
                 if(valid){
-                    const res = await register({username:this.registForm.username,password:this.registForm.password})
+                    const res = await register({username:this.registForm.username,password:this.registForm.password,role:this.role})
                     if (res.status == 1) {
                         this.$message({
                             type: 'success',
@@ -45,7 +54,16 @@ export default {
                     }
                 }
             })
-        }
+        },
+        handleCheckAllChange(index,value){
+            this.role[index]["checkedRole"]=value?this.role[index]['roleArr']:[];
+            this.role[index]["all"]=false;
+        },
+        handleCheckedRolesChange(val,id){
+            let checkedCount = val.length;
+            this.role[id]["checkAll"]=checkedCount==this.role[id]["roleArr"].length;
+            this.role[id]["all"]=checkedCount>0&&checkedCount<this.role[id]["roleArr"].length;
+        },
     }
 }
 </script>
@@ -53,10 +71,20 @@ export default {
     @import '../../style/mixin';
     .adminForm{
         position:absolute;
-        top: 0;
-        left: 0;
+        top: 40px;
+        left: 40px;
         z-index: 1;
         background-color: #fff;
         @include wh(100%,100%);
+        .fromInput{
+            width: 250px;
+        }
+        .headerCheck{
+            margin-bottom: 15px;
+        }
+        .mainCheck{
+            margin-bottom: 25px;
+            margin-left: 25px;
+        }
     }
 </style>

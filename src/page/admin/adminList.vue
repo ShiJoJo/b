@@ -1,6 +1,6 @@
 <template>
     <div class="adminList">
-        <el-button size="mini" style="margin-bottom:10px;">新增管理员</el-button>
+        <el-button size="mini" style="margin-bottom:10px;" @click="add">新增管理员</el-button>
         <el-table :data="tableData" border>
             <el-table-column type="index" label="序号" width="80"></el-table-column>
             <el-table-column prop="name" label="登录名"></el-table-column>
@@ -33,6 +33,11 @@ export default {
                 query:{
                     id:row.id
                 }
+            });
+        },
+        add(){
+            this.$router.push({
+                name:'addAdmin',
             });
         }
     }

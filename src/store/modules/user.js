@@ -44,7 +44,6 @@ const user = {
                     path:"*",
                     component:(r)=>require(['@/page/404Code'],r),
                 }]
-                console.log(roleRoute)
                 commit('SET_ROLE',false);
                 resolve(roleRoute);
             })

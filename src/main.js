@@ -13,7 +13,7 @@ Vue.use(ElementUI);
 Vue.config.productionTip = false;
 const router = new VueRouter({
 	routes,
-	// mode:"history",
+	mode:"history",
 	scrollBehavior (to, from, savedPosition) {
 	    if (savedPosition) {
 		    return savedPosition
@@ -34,9 +34,8 @@ router.beforeEach( (to, from, next) => {
 				store.dispatch('getUserInfo').then(response=>{
 					let role = response;
 					store.dispatch("elSildeRole",role).then((roleRoute)=>{
-						console.log(roleRoute)
 						router.addRoutes(roleRoute);
-						next({path:to.path});
+						next({path:to.path,query:to.query,params:to.params});
 					})
 				}).catch((err) => {
 					store.dispatch('layoutOut').then(() => {
