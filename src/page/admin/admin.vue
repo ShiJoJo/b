@@ -33,7 +33,7 @@ export default {
                 ]
             },
             role:[],
-            formJson:{},
+            formJson:[],
             isAdd:true
         }
     },
