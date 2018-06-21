@@ -15,7 +15,7 @@
 </template>
 <script>
 import {register,editAdmin,editSave} from '../../api/getDate'
-import roles from '@/config/admin'
+// import roles from '@/config/admin'
 export default {
     data(){
         return{
@@ -38,9 +38,16 @@ export default {
         }
     },
     mounted:function(){
-        editAdmin({id:this.$route.query.id});
         this.$route.query.id?this.isAdd=false:"";
-        this.role = roles;
+        let roleArr = editAdmin({id:this.$route.query.id});
+        if(roleArr.status==1){
+            this.role=roleArr.res;
+        }else{
+            this.$message({
+                type: 'error',
+                message: roleArr.message
+            });
+        }
     },
     methods:{
         submitForm(formName){
