@@ -3,9 +3,9 @@
         <el-form :model="registForm" :rules="rules" ref="registForm"   @keyup.enter.native="submitForm('registForm')">
             <el-form-item prop="username"><el-input placeholder="用户名" v-model="registForm.username" class="fromInput"></el-input></el-form-item>
             <el-form-item prop="password" v-if="isAdd"><el-input type="password" placeholder="密码" v-model="registForm.password" class="fromInput"></el-input></el-form-item>
-            <template v-for="item in role">
-                <el-checkbox :indeterminate="item.all" @change="handleCheckAllChange(item.id,item.checkAll)" v-model="item.checkAll" class="headerCheck">{{item.name}}</el-checkbox>
-                <el-checkbox-group v-model="item.checkedRole" @change="handleCheckedRolesChange(item.checkedRole,item.id)" class="mainCheck">
+            <template v-for="(item,itemIndex) in role">
+                <el-checkbox :indeterminate="item.all" @change="handleCheckAllChange(item.checkAll,item.id,itemIndex)" v-model="item.checkAll" class="headerCheck">{{item.name}}</el-checkbox>
+                <el-checkbox-group v-model="item.checkedRole" @change="handleCheckedRolesChange(item.checkedRole,item.id,itemIndex)" class="mainCheck">
                     <el-checkbox v-for="(roleC,index) in item.children" :key="index" :label="roleC.id">{{roleC.name}}</el-checkbox>
                 </el-checkbox-group>
             </template>
@@ -33,32 +33,36 @@ export default {
                 ]
             },
             role:[],
-            formJson:[],
+            formJson:{},
             isAdd:true
         }
     },
     mounted:function(){
         this.$route.query.id?this.isAdd=false:"";
-        let roleArr = editAdmin({id:this.$route.query.id});
-        if(roleArr.status==1){
-            this.role=roleArr.res;
-        }else{
-            this.$message({
-                type: 'error',
-                message: roleArr.message
-            });
-        }
+        editAdmin({id:this.$route.query.id}).then(response=>{
+            if(response.status==1){
+                this.role=response.res;
+                this.registForm.username = response.adminName;
+                this.formJson = response.roleId;
+            }else{
+                this.$message({
+                    type: 'error',
+                    message: response.message
+                });
+            }
+        });
     },
     methods:{
         submitForm(formName){
             this.$refs[formName].validate(async(valid)=>{
                 if(valid){
                     let formJson = JSON.stringify(this.formJson);
+                    let res;
                     if(this.isAdd){
-                        const res = await register({username:this.registForm.username,password:this.registForm.password,role:formJson});
+                        res = await register({username:this.registForm.username,password:this.registForm.password,role:formJson});
                     }else{
-                        const res = await editSave({username:this.registForm.username,role:formJson});
-                    }                    
+                        res = await editSave({username:this.registForm.username,role:formJson,admin_id:this.$route.query.id});
+                    }              
                     if (res.status == 1) {
                         this.$message({
                             type: 'success',
@@ -74,16 +78,22 @@ export default {
                 }
             })
         },
-        handleCheckAllChange(index,value){
+        handleCheckAllChange(value,id,index){
             this.role[index]["checkedRole"]=value?this.role[index]['roleArr']:[];
-            this.formJson[index]=value?this.role[index]['roleArr']:[];
+            this.formJson[id]=value?this.role[index]['roleArr']:[];
             this.role[index]["all"]=false;
+            if(!value){
+                delete this.formJson[id]
+            }
         },
-        handleCheckedRolesChange(val,id){
+        handleCheckedRolesChange(val,id,index){
             let checkedCount = val.length;
             this.formJson[id]=val;
-            this.role[id]["checkAll"]=checkedCount==this.role[id]["roleArr"].length;
-            this.role[id]["all"]=checkedCount>0&&checkedCount<this.role[id]["roleArr"].length;
+            this.role[index]["checkAll"]=checkedCount==this.role[index]["roleArr"].length;
+            this.role[index]["all"]=checkedCount>0&&checkedCount<this.role[index]["roleArr"].length;
+            if(checkedCount==0){
+                delete this.formJson[id]
+            }
         },
     }
 }
